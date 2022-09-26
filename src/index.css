@@ -652,6 +652,7 @@ button {
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.2);
   max-width: 500px;
+  margin-bottom: 2rem;
 }
 
 .profileDetails {

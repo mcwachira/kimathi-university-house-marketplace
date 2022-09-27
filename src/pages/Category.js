@@ -1,56 +1,56 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
-import { collection, getDocs, query, where, orderBy, limit, startAfter, doc } from 'firebase/firestore'
+import {collection , getDocs, query, where ,orderBy, limit ,startAfter, doc} from 'firebase/firestore'
 import { db } from '../firebase/firebase'
 import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
 import ListingItem from '../components/ListingItem';
-const Offers = () => {
+const Category = () => {
 
-  const [listings, setListings] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [listings, setListings]=useState(null)
+  const [loading, setLoading]=useState(true)
 
 
   const params = useParams()
 
   useEffect(() => {
 
-    const fetchListings = async () => {
+    const fetchListings = async() =>{
       try {
 
 
         //instead of creating a collection reference we can directly create a snapshot of the data
-        // const querySnapshot = await (getDocs(collection(db, 'listings')))
+       // const querySnapshot = await (getDocs(collection(db, 'listings')))
 
         //get collection reference
         const listingRef = collection(db, 'listings')
 
-     
+        console.log(params.categoryName)
         //create a query 
         const q = query(
           listingRef,
-          where('offer', '==', true),
+          where('type', '==', params.categoryName),
           orderBy('timestamp', 'desc'),
           limit(10)
         )
-
+     
 
         //create a snapshot
         const querySnapshot = await getDocs(q)
 
-
+      
         //create an array to store data gotten from firebase
-        const listing = []
-
+        const listing =[]
+    
 
 
         querySnapshot.forEach((doc) => {
-
-
+          
+        
           console.log(doc.data());
-          return listing.push({
-            id: doc.id,
-            data: doc.data()
+         return  listing.push({
+            id:doc.id,
+            data:doc.data()
           })
         })
 
@@ -68,29 +68,29 @@ const Offers = () => {
 
 
     fetchListings()
-  }, [])
+  },[params.categoryName])
   return (
-    <div className="category">
+  <div className="category">
       <p className="pageHeader">
 
-Offers
+        Places for {params.categoryName==="rent" ? 'Rent' : "Sale"} 
       </p>
 
-      {loading ? <Spinner /> : listings && listings.length > 0 ? (<>
+      { loading ? <Spinner/>: listings && listings.length > 0 ? (<>
 
-        <main>
-          <ul className="categoryListings">
+      <main>
+        <ul className="categoryListings">
             {listings.map((listing) => (<ListingItem listing={listing.data} id={listing.id} key={listing.id} />))}
-          </ul>
-        </main>
+        </ul>
+      </main>
 
 
-      </>) : (<h1>
-
-There are no current Offers
-      </h1>)}
-    </div>
+      </>):( <h1> 
+      
+      No listings for {params.categoryName}
+      </h1>) }
+  </div>
   )
 }
 
-export default Offers
+export default Category

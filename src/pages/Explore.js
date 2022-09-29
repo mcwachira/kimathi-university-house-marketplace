@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import rentCategoryImage from '../assets/jpg/rentCategoryImage.jpg'
 import saleCategoryImage from '../assets/jpg/sellCategoryImage.jpg'
+import Slider from '../components/Slider.jsx'
 
 const Explore = () => {
   return (
@@ -14,6 +15,7 @@ const Explore = () => {
 
 <main>
 
+<Slider/>
   <p className="exploreCategoryHeading">
     Categories
   </p>
